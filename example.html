@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>example: qlip</title>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" ></script>
+<script type="text/javascript" src="jquery.qlip.js" ></script>
+<script type="text/javascript">
+$(function(){
+	$(".myTest").qlip().on('copy',function(){alert('hello!')});
+});
+</script>
+<style type="text/css">
+.myTest {
+	background: #900;
+	border: 10px solid #0C0;
+	padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="myTest" data-qlip-string="hello one">Hello One</div>
+<div class="myTest" data-qlip-string="hello two">Hello Two</div>
+
+
+</body>
+</html>

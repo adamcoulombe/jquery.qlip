@@ -1,0 +1,12 @@
+{
+    "name":         "jquery.qlip",
+    "version":      "0.0.1",
+    "main":         ["./jquery.qlip.js", "./jquery.qlip.min.js"],
+    "dependencies": {
+        "jquery": ">=1.7.2"
+    },
+    "repository":   {
+        "type": "git",
+        "url":  "git://github.com/adamcoulombe/jquery.qlip.git"
+    }
+}
