@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <title>example: qlip</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" ></script>
-<script type="text/javascript" src="jquery.qlip.js" ></script>
+<link href="jquery.qlip.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery.qlip.js"></script>
 <script type="text/javascript">
 $(function(){
-	$(".myTest").qlip().on('copy',function(){alert('hello!')});
+	$(".myTest").qlip({selection:$("#textBlock")}).on('copy',function(){alert('hello!')});
 });
 </script>
 <style type="text/css">
@@ -25,6 +26,7 @@ $(function(){
 <div class="myTest" data-qlip-string="hello one">Hello One</div>
 <div class="myTest" data-qlip-string="hello two">Hello Two</div>
 
+<div id="textBlock">hello everybody</div>
 
 </body>
 </html>

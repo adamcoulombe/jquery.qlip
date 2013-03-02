@@ -28,6 +28,9 @@
     			if(data.event=="mouseout"){
     				$el.removeClass("qlip-hover");
     			}
+    			if(data.event=="loaded"){
+    				$el.toggleClass('qlip-no-copy qlip-has-copy');
+    			}
     		}
     	}
     });
@@ -40,24 +43,29 @@
                 swf: "qlip.swf",
                 width: null,
                 height: null,
-				container:null,
 				top:null,
 				left:null
             };
 				
 			options = $.extend(defaults, options);
+
+			var $modal = $('<div id="qlip-modal"/>');
+			var $textarea = $('<textarea id="qlip-modal-selection" />').appendTo($modal);
 			
 			return this.each(function (i) {
 				var $this = $(this),
 				string = (typeof arguments[0] == "string") ? arguments[0] :  $this.data('qlip-string'),
-				$container = options.container || $this,
 				qlipId = "qlip-" + batch + "-" + i,
-				qlipWidth = options.width || $container.outerWidth(),
-				qlipHeight = options.height || $container.outerHeight(),
-				qlipTop = options.top || -parseInt($container.css("border-top-width")),
-				qlipLeft = options.left || -parseInt($container.css("border-top-width")),
+				qlipWidth = options.width || $this.outerWidth(),
+				qlipHeight = options.height || $this.outerHeight(),
+				qlipTop = options.top || -parseInt($this.css("border-top-width")),
+				qlipLeft = options.left || -parseInt($this.css("border-top-width")),
 				swfParams = 'string=' + encodeURIComponent(string) + '&id=' + qlipId;
-
+				
+				$this.addClass('qlip-no-copy');
+				if($this.css('position')=='static'){
+					$this.css('position','relative');
+				}
 				var $swf = $('<span class="qlip" />').css({
 								display:'block',
 								position:'absolute'
@@ -69,7 +77,7 @@
 									$('<embed src="'+options.swf+'" wmode="transparent" flashvars="' + swfParams + '"  width="100%" height="100%" />')
 								)
 							);
-
+				
 				$this.on('update',function(){
 					$swf.css({
 						width:qlipWidth,
@@ -77,9 +85,19 @@
 						top:qlipTop,
 						left:qlipLeft
 					});
-				}).trigger('update');
+				})
+				.append($swf)
+				.trigger('update')
+				.attr("data-qlip-id", qlipId);
 
-				$container.attr("data-qlip-id", qlipId).css({position:"relative"}).append($swf);
+				$this.on('click touchdown',function(){
+					$('body').append($modal);
+					$textarea.html(string).focus().select().on('copy',function(){
+						$this.trigger('copy');
+						$modal.remove();
+					}).get(0).setSelectionRange(0, 9999);
+				});
+
 			});
 		}
 	});
