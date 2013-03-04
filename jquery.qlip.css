@@ -1,29 +1,230 @@
+@-moz-keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes modal-window-close {
+  0% {
+    -moz-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    -moz-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes modal-window-close {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes modal-window-close {
+  0% {
+    -o-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    -o-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes modal-window-close {
+  0% {
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    -ms-transform: scale(0.2);
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes modal-window-close {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
 #qlip-modal-selection{
-	background-color:#222;
-	position:absolute;
+	width:50%;
+	height:35px;
+	margin: auto;
+	display: block;
 	color:#fff;
 	font-family:sans-serif;
 	-webkit-appearance:none;
-	border:none;
 	outline:none;
-	border-radius: 10px;
 	font-size:28px;
 	padding:20px;
-	left:50%;
-	top:50%;
-	width:500px;
-	height:40px;
-	margin-top:-72px;
-	margin-left:-250px;
-	-webkit-box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.9);
-    box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.9);
+	background-color: rgba(22, 22, 22, 0.83);
+	-webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 13px 0px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 13px 0px;
+	box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 13px 0px;
+	border: 2px solid rgba(255, 255, 255, 0.28);
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	-ms-border-radius: 8px;
+	-o-border-radius: 8px;
+	border-radius: 8px;
+	
 }
-
+#qlip-modal-label kbd {
+	display: inline-block;
+	border-radius: 3px;
+	padding: 0.2em;
+	font-family:sans-serif;
+	color:#424242;
+	background: -moz-linear-gradient(top,  rgba(252,252,252,0.74) 70%, rgba(248,248,248,0.74) 72%, rgba(191,191,191,0.74) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(70%,rgba(252,252,252,0.74)), color-stop(72%,rgba(248,248,248,0.74)), color-stop(100%,rgba(191,191,191,0.74)));
+	background: -webkit-linear-gradient(top,  rgba(252,252,252,0.74) 70%,rgba(248,248,248,0.74) 72%,rgba(191,191,191,0.74) 100%);
+	background: -o-linear-gradient(top,  rgba(252,252,252,0.74) 70%,rgba(248,248,248,0.74) 72%,rgba(191,191,191,0.74) 100%);
+	background: -ms-linear-gradient(top,  rgba(252,252,252,0.74) 70%,rgba(248,248,248,0.74) 72%,rgba(191,191,191,0.74) 100%);
+	background: linear-gradient(to bottom,  rgba(252,252,252,0.74) 70%,rgba(248,248,248,0.74) 72%,rgba(191,191,191,0.74) 100%);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.75);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.75);
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 1);
+}
+#qlip-modal-label kbd.keydown {
+	background: rgb(68,132,238);
+	background: -moz-linear-gradient(top,  rgba(68,132,238,1) 0%, rgba(27,80,222,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(68,132,238,1)), color-stop(100%,rgba(27,80,222,1)));
+	background: -webkit-linear-gradient(top,  rgba(68,132,238,1) 0%,rgba(27,80,222,1) 100%);
+	background: -o-linear-gradient(top,  rgba(68,132,238,1) 0%,rgba(27,80,222,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(68,132,238,1) 0%,rgba(27,80,222,1) 100%);
+	background: linear-gradient(to bottom,  rgba(68,132,238,1) 0%,rgba(27,80,222,1) 100%);
+	text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.75);
+	color:#fff;
+}
+#qlip-modal-label {
+	font:25px sans-serif;
+	text-align: center;
+	color: #fff;
+	margin: 1em;
+}
+#qlip-modal-window {
+	position:absolute;
+	left:0;
+	top:50%;
+	width:100%;
+	margin-top:-120px;
+}
+#qlip-modal.close {
+	-webkit-animation: modal-close;
+	-moz-animation: modal-close;
+	-ms-animation: modal-close;
+	-o-animation: modal-close;
+	animation: modal-close;
+}
+#qlip-modal.close #qlip-modal-window {
+	-webkit-animation: modal-window-close;
+	-moz-animation: modal-window-close;
+	-ms-animation: modal-window-close;
+	-o-animation: modal-window-close;
+	animation: modal-window-close;
+}
+#qlip-modal.close, #qlip-modal.close #qlip-modal-window {
+	-webkit-animation-duration: 0.3s;
+	-moz-animation-duration: 0.3s;
+	-ms-animation-duration: 0.3s;
+	-o-animation-duration: 0.3s;
+	animation-duration: 0.3s;
+	-webkit-animation-timing-function: ease-in-out;
+	-moz-animation-timing-function: ease-in-out;
+	-ms-animation-timing-function: ease-in-out;
+	-o-animation-timing-function: ease-in-out;
+	animation-timing-function: ease-in-out;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	-ms-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
 #qlip-modal{
-	background-color:rgba(35,35,35,0.8);
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(75,75,75,0.86) 0%, rgba(42,42,42,1) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(75,75,75,0.86)), color-stop(100%,rgba(42,42,42,1)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(75,75,75,0.86) 0%,rgba(42,42,42,1) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgba(75,75,75,0.86) 0%,rgba(42,42,42,1) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(75,75,75,0.86) 0%,rgba(42,42,42,1) 100%);
+	background: radial-gradient(ellipse at center,  rgba(75,75,75,0.86) 0%,rgba(42,42,42,1) 100%);
 	width:100%;
 	height:100%;
 	position:fixed;
 	top:0;
 	left:0;
 }
+@media all and (max-width: 800px) {
+	#qlip-modal-selection{
+		width:75%;
+}	}

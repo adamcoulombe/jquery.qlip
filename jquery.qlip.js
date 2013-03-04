@@ -29,8 +29,12 @@
     				$el.removeClass("qlip-hover");
     			}
     			if(data.event=="loaded"){
-    				$el.toggleClass('qlip-no-copy qlip-has-copy');
+    				$el.toggleClass('qlip-no-swf qlip-has-swf');
     			}
+    		},
+    		environment : {
+    			touch : ('ontouchstart' in document.documentElement),
+    			mac : (navigator.appVersion.indexOf("Mac")!=-1)
     		}
     	}
     });
@@ -38,6 +42,7 @@
     $.fn.extend({
         qlip: function () {
 			var options = (typeof arguments[0] == "object") ? arguments[0] : arguments[1],
+			stringArg = (typeof arguments[0] == "string") ? arguments[0] : null,
 			batch = new Date().getTime(),
 			defaults = {
                 swf: "qlip.swf",
@@ -49,12 +54,13 @@
 				
 			options = $.extend(defaults, options);
 
-			var $modal = $('<div id="qlip-modal"/>');
-			var $textarea = $('<textarea id="qlip-modal-selection" />').appendTo($modal);
+			var $modal = $('<div id="qlip-modal"/>'),
+			$modalWindow = $('<div id="qlip-modal-window"/>').appendTo($modal),
+			$modalLabel = $('<div id="qlip-modal-label" />').appendTo($modalWindow);
 			
 			return this.each(function (i) {
 				var $this = $(this),
-				string = (typeof arguments[0] == "string") ? arguments[0] :  $this.data('qlip-string'),
+				string = stringArg || $this.data('qlip-string'),
 				qlipId = "qlip-" + batch + "-" + i,
 				qlipWidth = options.width || $this.outerWidth(),
 				qlipHeight = options.height || $this.outerHeight(),
@@ -62,42 +68,88 @@
 				qlipLeft = options.left || -parseInt($this.css("border-top-width")),
 				swfParams = 'string=' + encodeURIComponent(string) + '&id=' + qlipId;
 				
-				$this.addClass('qlip-no-copy');
-				if($this.css('position')=='static'){
-					$this.css('position','relative');
+				$this.addClass('qlip-no-swf');
+				if(options.swf){
+					if($this.css('position')=='static'){
+						$this.css('position','relative');
+					}
+					var $swf = $('<span class="qlip" />').css({
+									display:'block',
+									position:'absolute'
+								}).append(
+									$('<object width="100%" height="100%" />').append(
+										$('<param name="movie" value="'+options.swf+'" />'),
+										$('<param name="flashvars" value="' + swfParams + '" />'),
+										$('<param name="wmode" value="transparent" />'),
+										$('<embed src="'+options.swf+'" wmode="transparent" flashvars="' + swfParams + '"  width="100%" height="100%" />')
+									)
+								);
+					
+					$this.on('update',function(){
+						$swf.css({
+							width:qlipWidth,
+							height:qlipHeight,
+							top:qlipTop,
+							left:qlipLeft
+						});
+					})
+					.append($swf)
+					.trigger('update')
+					.attr("data-qlip-id", qlipId);
 				}
-				var $swf = $('<span class="qlip" />').css({
-								display:'block',
-								position:'absolute'
-							}).append(
-								$('<object width="100%" height="100%" />').append(
-									$('<param name="movie" value="'+options.swf+'" />'),
-									$('<param name="flashvars" value="' + swfParams + '" />'),
-									$('<param name="wmode" value="transparent" />'),
-									$('<embed src="'+options.swf+'" wmode="transparent" flashvars="' + swfParams + '"  width="100%" height="100%" />')
-								)
-							);
-				
-				$this.on('update',function(){
-					$swf.css({
-						width:qlipWidth,
-						height:qlipHeight,
-						top:qlipTop,
-						left:qlipLeft
-					});
-				})
-				.append($swf)
-				.trigger('update')
-				.attr("data-qlip-id", qlipId);
 
 				$this.on('click touchdown',function(){
-					$('body').append($modal);
-					$textarea.html(string).focus().select().on('copy',function(){
-						$this.trigger('copy');
-						$modal.remove();
-					}).get(0).setSelectionRange(0, 9999);
-				});
+					if(!$.qlip.environment.touch){
+						var kbdKeyLabel = $.qlip.environment.mac ? '&#8984;Cmd' : 'Ctrl';
+						$modalLabel.html('<kbd>'+kbdKeyLabel+'</kbd>+<kbd>C</kbd> to copy');
+						var cmdKeys = [17,91,224,93];
+						$(window).on('keydown.qlip keyup.qlip',function(e){
+							if( $.inArray(e.which,cmdKeys) > -1 ){ // ctrl or cmd
+								$modalLabel.children('kbd:nth-of-type(1)').attr('class',e.type);
+							}
+							if(e.which == 67 ){ // "c"
+								$modalLabel.children('kbd:nth-of-type(2)').attr('class',e.type);
+							}
+							if(e.which == 27 ){ // escape
+								$textarea.trigger('cancel');
+							}
+						});
+					}
 
+					var $textarea = $('<textarea id="qlip-modal-selection" />')
+					$modalWindow.empty().append(
+						$textarea,
+						$modalLabel
+					);
+
+					$('body').append($modal);
+					$modal.on('click.qlip touchdown.qlip',function(e){
+						if(e.target==$modal[0]){
+							$textarea.trigger('cancel');
+						}
+					});
+					$textarea.html(string)
+					.on('focus.qlip', function(){
+						$(this).select().get(0).setSelectionRange(0, 9999);
+					})
+					.on('touchstart.qlip click.qlip',function(){
+						$(this).trigger('focus.qlip');
+					})
+					.trigger('click.qlip')
+					.one('cut copy cancel',function(e){
+						$(window).off('keydown.qlip keyup.qlip');
+						$modal.off('click.qlip touchstart.qlip');
+						$textarea.off('click.qlip touchstart.qlip focus.qlip');
+						if(e.type=='cut' || e.type=='copy' ){
+							$this.trigger('copy');
+						}
+							
+						$modal.addClass('close').one("animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd",function(){
+							$modal.removeClass('close').remove()
+							$modalLabel.children('kbd').attr('class','');
+						});
+					});
+				});
 			});
 		}
 	});
