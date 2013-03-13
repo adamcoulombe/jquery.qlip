@@ -8,25 +8,110 @@
 <link href="jquery.qlip.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="jquery.qlip.js"></script>
 <script type="text/javascript">
+function blink(){
+	$(this).addClass('blink').one('animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd',function(){
+		$(this).removeClass('blink');
+	});
+}
 $(function(){
-	$(".myTest").qlip({swf:null});
+	$(".testBox.eg1").qlip().on('copy', blink);
+	$(".testBox.eg2").qlip({updateOnWindowResize:true}).on('copy', blink);
+	$(".testBox.eg3").qlip({swf:null}).on('copy', blink);
 });
 </script>
 <style type="text/css">
-.myTest {
-	background: #900;
-	border: 10px solid #0C0;
+.testBox,pre {
 	padding: 10px;
+	margin:10px;
+	border-radius:5px;
+	color:#fff;
+	cursor:pointer;
+}
+.testBox.eg1 {
+	background: #8C1B2F;
+	border: 10px solid #26061E;
+	width:160px;
+}
+.testBox.eg2 {
+	background: #DB723D;
+	border: 10px solid #B32A09;
+}
+.testBox.eg3 {
+	background: #1FB265;
+	border: 10px solid #215E4C;
+}
+.blink {
+	-webkit-animation-name: blink;
+	-moz-animation-name: blink;
+	-o-animation-name: blink;
+	animation-name: blink;
+	-webkit-animation-fill-mode: both;
+	-moz-animation-fill-mode: both;
+	-ms-animation-fill-mode: both;
+	-o-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	-ms-animation-duration: 1s;
+	-o-animation-duration: 1s;
+	animation-duration: 1s;
+}
+
+
+@-webkit-keyframes blink {
+	0%, 50%, 100% {opacity: 1;}	
+	25%, 75% {opacity: 0;}
+}
+
+@-moz-keyframes blink {
+	0%, 50%, 100% {opacity: 1;}	
+	25%, 75% {opacity: 0;}
+}
+
+@-o-keyframes blink {
+	0%, 50%, 100% {opacity: 1;}	
+	25%, 75% {opacity: 0;}
+}
+
+@keyframes blink {
+	0%, 50%, 100% {opacity: 1;}	
+	25%, 75% {opacity: 0;}
+}
+body{
+	font-family:sans-serif;
+	margin:2em;
+}
+
+h3 em{
+	color: #888;
+	font-size: 0.85em;
+	padding-left:0.5em;
+}
+pre {
+	background-color:#eee;
+	color:#000;
+	overflow:auto;
 }
 </style>
 </head>
 
 <body>
+<h3>Example 1 <em>Basic - Flash Enabled On Fixed Width element</em></h3>
 
-<div class="myTest" data-qlip-string="hello one">Hello One</div>
-<div class="myTest" data-qlip-string="hello two">Hello Two</div>
+<pre>
+$(".testBox.eg1").qlip().on('copy', blink);
+</pre>
+<div class="testBox eg1" data-qlip-string="He&#39;s climbin&#39; in your windows">Copy <em><b>"He&#39;s climbin&#39; in your windows"</b></em> to your clipboard</div>
 
-<div id="textBlock">hello everybody</div>
-
+<h3>Example 2 <em>Fluid Width + Flash Enabled</em></h3>
+<pre>
+$(".testBox.eg2").qlip({updateOnWindowResize:true}).on('copy', blink);
+</pre>
+<div class="testBox eg2" data-qlip-string="He&#39;s snatchin&#39; your people up">Copy <em><b>"He&#39;s snatchin&#39; your people up"</b></em> to your clipboard</div>
+<h3>Example 3 <em>No Flash</em></h3>
+<pre>
+$(".testBox.eg3").qlip({swf:null}).on('copy', blink);
+</pre>
+<div class="testBox eg3" data-qlip-string="Hide your kids, hide your wife">Copy <em><b>"Hide your kids, hide your wife"</b></em> to your clipboard</div>
 </body>
 </html>

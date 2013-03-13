@@ -1,7 +1,7 @@
 /*!
- * jquery.qlip() - v0.0.1
+ * jquery.qlip() - v1.0.0
  * http://adam.co/lab/jquery/qlip/
- * 01/03/2013
+ * 01/05/2013
  *
  * Copyright 2013 Adam Coulombe
  * @license http://www.opensource.org/licenses/mit-license.html MIT License
@@ -49,7 +49,8 @@
                 width: null,
                 height: null,
 				top:null,
-				left:null
+				left:null,
+				updateOnWindowResize:false
             };
 				
 			options = $.extend(defaults, options);
@@ -62,10 +63,6 @@
 				var $this = $(this),
 				string = stringArg || $this.data('qlip-string'),
 				qlipId = "qlip-" + batch + "-" + i,
-				qlipWidth = options.width || $this.outerWidth(),
-				qlipHeight = options.height || $this.outerHeight(),
-				qlipTop = options.top || -parseInt($this.css("border-top-width")),
-				qlipLeft = options.left || -parseInt($this.css("border-top-width")),
 				swfParams = 'string=' + encodeURIComponent(string) + '&id=' + qlipId;
 				
 				$this.addClass('qlip-no-swf');
@@ -73,7 +70,7 @@
 					if($this.css('position')=='static'){
 						$this.css('position','relative');
 					}
-					var $swf = $('<span class="qlip" />').css({
+					var $swf = $('<span class="qlip-swf" />').css({
 									display:'block',
 									position:'absolute'
 								}).append(
@@ -85,17 +82,22 @@
 									)
 								);
 					
-					$this.on('update',function(){
+					$this.on('update.qlip',function(){
 						$swf.css({
-							width:qlipWidth,
-							height:qlipHeight,
-							top:qlipTop,
-							left:qlipLeft
+							width:options.width || $this.outerWidth(),
+							height:options.height || $this.outerHeight(),
+							top:options.top || -parseInt($this.css("border-top-width")),
+							left:options.left || -parseInt($this.css("border-top-width"))
 						});
 					})
 					.append($swf)
 					.trigger('update')
 					.attr("data-qlip-id", qlipId);
+					if(options.updateOnWindowResize){
+						$(window).on('resize.qlip',function(){
+							$this.trigger('update.qlip');
+						});
+					}
 				}
 
 				$this.on('click touchdown',function(){
@@ -111,7 +113,7 @@
 								$modalLabel.children('kbd:nth-of-type(2)').attr('class',e.type);
 							}
 							if(e.which == 27 ){ // escape
-								$textarea.trigger('cancel');
+								$textarea.trigger('blur');
 							}
 						});
 					}
@@ -124,8 +126,8 @@
 
 					$('body').append($modal);
 					$modal.on('click.qlip touchdown.qlip',function(e){
-						if(e.target==$modal[0]){
-							$textarea.trigger('cancel');
+						if(e.target!=$textarea[0]){
+							$textarea.trigger('blur');
 						}
 					});
 					$textarea.html(string)
@@ -136,18 +138,19 @@
 						$(this).trigger('focus.qlip');
 					})
 					.trigger('click.qlip')
-					.one('cut copy cancel',function(e){
+					.one('cut copy blur',function(e){
 						$(window).off('keydown.qlip keyup.qlip');
 						$modal.off('click.qlip touchstart.qlip');
 						$textarea.off('click.qlip touchstart.qlip focus.qlip');
 						if(e.type=='cut' || e.type=='copy' ){
 							$this.trigger('copy');
 						}
-							
-						$modal.addClass('close').one("animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd",function(){
-							$modal.removeClass('close').remove()
-							$modalLabel.children('kbd').attr('class','');
-						});
+						setTimeout(function(){
+							$modal.addClass('close').one("animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd",function(){
+								$modal.removeClass('close').remove()
+								$modalLabel.children('kbd').attr('class','');
+							});
+						},100);
 					});
 				});
 			});

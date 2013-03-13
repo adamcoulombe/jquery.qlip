@@ -1,2 +1,5 @@
 .DS_Store
 .project
+qlip.sublime-project
+qlip.sublime-workspace
+sftp-config.json

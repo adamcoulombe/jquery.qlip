@@ -6,7 +6,7 @@ Copy to clipboard jQuery Plugin
 
 qlip is a jQuery plugin designed to easily enable "click to copy" functionality in a webpage. qlip takes inspiration from the [ZeroClipboard](https://github.com/jonrohan/ZeroClipboard/) approach but is written in jQuery and is intended to be much simpler and easier to use. The minified script is less than half the size of ZeroClipboard.
 
-#### [Demo](http://jsfiddle.net/jkYyH/)
+#### [Demo](http://adam.co/lab/jquery/qlip/example.html)
 
 ### Usage
 
@@ -37,6 +37,12 @@ $("#myCopyButton").qlip().on('copy',function(){
 });
 ```
 
+#### Automatically update SWF width when window resizes
+###### Useful for responsive applications where button size changes
+```javascript
+$("#myCopyButton").qlip({updateOnWindowResize: true});
+```
+
 #### With Options
 #####The HTML
 ```html
@@ -45,11 +51,11 @@ $("#myCopyButton").qlip().on('copy',function(){
 #####The JS
 ```javascript
 $("#myCopyButton").qlip({
-	swf: "someotherpath/qlip.swf", 	// default is "qlip.swf"
-	container: $("#myWrapperDiv"), 	// defaults to self
+	swf: "someotherpath/qlip.swf", 	// default is "qlip.swf" (use null for no-flash)
 	width: 200px, 					// defaults to container width
 	height: 200px, 					// defaults to container height
 	top: 50px,						// defaults to top of container (0px)
-	left: 25px						// defaults to left of container (0px)
+	left: 25px,						// defaults to left of container (0px)
+	updateOnWindowResize: true		// default is false.
 });
 ```
