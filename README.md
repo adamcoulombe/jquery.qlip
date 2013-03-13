@@ -10,6 +10,13 @@ qlip is a jQuery plugin designed to easily enable "click to copy" functionality 
 
 ### Usage
 
+Add the CSS and JS files to your HTML doc:
+
+```html
+<link href="jquery.qlip.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery.qlip.js"></script>
+```
+
 #### Basic Example
 #####The HTML
 ```html
@@ -32,7 +39,7 @@ $("#myCopyButton").qlip("You have been qlipped!");
 
 #### Attach a callback
 ```javascript
-$("#myCopyButton").qlip().on('copy',function(){
+$("#myCopyButton").qlip().on('copy', function(){
 	alert('success!');
 });
 ```
